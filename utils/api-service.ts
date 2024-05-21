@@ -10,12 +10,14 @@ import {
 } from "@/schema/zod-schemas";
 import axios, { AxiosError, AxiosResponse } from "axios";
 
+const baseApiPath = process.env.NEXT_PUBLIC_BASE_PAI_PATH
+
 async function getAllCategories(): Promise<
   ProductCategoriesSchema | AxiosError
 > {
   try {
     const response: AxiosResponse<ProductCategoriesSchema> = await axios.get(
-      "https://fakestoreapi.com/products/categories"
+      `${baseApiPath}/products/categories`
     );
     return response.data;
   } catch (err) {
@@ -31,7 +33,7 @@ async function registerUser(
 ): Promise<UserRegistrationSchema | AxiosError> {
   try {
     const response: AxiosResponse<UserRegistrationSchema> = await axios.post(
-      "https://fakestoreapi.com/users",
+      `${baseApiPath}/users`,
       { ...payload }
     );
     return response.data;
@@ -50,7 +52,7 @@ async function loginUser(): Promise<LoginResponseSchema | AxiosError> {
   };
   try {
     const response: AxiosResponse<LoginResponseSchema> = await axios.post(
-      "https://fakestoreapi.com/auth/login",
+      `${baseApiPath}/auth/login`,
       JSON.stringify({ ...credentials }),
       {
         headers: {
@@ -70,7 +72,7 @@ async function loginUser(): Promise<LoginResponseSchema | AxiosError> {
 async function getAllProducts(): Promise<ProductsSchema | AxiosError> {
   try {
     const response: AxiosResponse<ProductsSchema> = await axios.get(
-      "https://fakestoreapi.com/products"
+      `${baseApiPath}/products`
     );
     return response.data;
   } catch (err) {
@@ -86,7 +88,7 @@ async function getProductDetailsById(
 ): Promise<ProductSchema | AxiosError> {
   try {
     const response: AxiosResponse<ProductSchema> = await axios.get(
-      `https://fakestoreapi.com/products/${productId}`
+      `${baseApiPath}/products/${productId}`
     );
     return response.data;
   } catch (err) {
@@ -98,11 +100,10 @@ async function getProductDetailsById(
 }
 
 async function getOrderDetailsByUserId(
-  userId?: number
 ): Promise<OrdersSchema | AxiosError> {
   try {
     const response: AxiosResponse<OrdersSchema> = await axios.get(
-      "https://fakestoreapi.com/carts/user/2"
+      `${baseApiPath}/carts/user/2`
     );
     return response.data;
   } catch (err) {
@@ -118,7 +119,7 @@ async function getProductsByCategory(
 ): Promise<ProductsSchema | AxiosError> {
   try {
     const response: AxiosResponse<ProductsSchema> = await axios.get(
-      `https://fakestoreapi.com/products/category/${categoryName}`
+      `${baseApiPath}/products/category/${categoryName}`
     );
     return response.data;
   } catch (err) {
@@ -134,7 +135,7 @@ async function addToCart(
 ): Promise<AddToCartSchema | AxiosError> {
   try {
     const response: AxiosResponse<AddToCartSchema> = await axios.post(
-      "https://fakestoreapi.com/carts",
+      `${baseApiPath}/carts`,
       { ...payload }
     );
     return response.data;

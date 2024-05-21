@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { FormattedSearchItems } from "./formatted-search-items";
 import { Input } from "./ui/input";
 import { Sheet, SheetContent, SheetHeader } from "./ui/sheet";
-import { throttle } from "throttle-debounce";
 
 function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogProps) {
   const [products, setProducts] = useState<ProductsSchema>([]);
@@ -19,23 +18,20 @@ function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogProps) {
     }
   }
 
-  function filterProducts(value: string) {
+  function getFilteredProducts(value: string):ProductsSchema {
     const filteredProducts = products.filter((product) =>
       product.title.toLowerCase().includes(value.toLowerCase())
     );
-
-    setFilteredProducts(filteredProducts);
+    return filteredProducts
   }
-  const getFilteredProducts = throttle(800, filterProducts, {
-    noLeading: false,
-    noTrailing: false,
-  });
 
   function handleInputChange(value: string) {
     if (value.length === 0) {
       setFilteredProducts([]);
     } else {
       getFilteredProducts(value);
+      const filteredProducts = getFilteredProducts(value)
+      setFilteredProducts(filteredProducts)
     }
   }
 
@@ -70,3 +66,4 @@ function ProductSearchDialog({ open, onOpenChange }: ProductSearchDialogProps) {
 }
 
 export { ProductSearchDialog };
+
